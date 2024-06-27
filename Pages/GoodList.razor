@@ -1,0 +1,90 @@
+﻿@page "/GoodList"
+@using GoodIssueNoteApp.Data
+@inject GoodsService goodService
+
+<NavLink class="nav-link" href="Add New Good">
+    <span class=" oi oi-plus" aria-hidden="true">  Add New Good    </span>
+</NavLink>
+
+<h3>GoodList</h3>
+@if(GoodObj is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    GoodId
+                </th>
+                <th>
+                    Good Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    QuantityInStock
+                </th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+            <tbody>
+                @foreach( var good in GoodObj)
+                {
+                    <tr>
+                        <td>
+                            @good.GoodId
+                        </td>
+                        <td>
+                            @good.Name
+                        </td>
+                        <td>
+                            @good.Description
+                        </td>
+                        <td>
+                            @good.QuantityInStock
+                         </td>
+                        <td>
+                        <a class="nav-link btn btn-primary" href="EditGood/@good.GoodId">
+                            <span class="oi oi-pencil" aria-hidden="true"> Edit </span>
+                             </a>
+                        </td>
+                    <td>
+                        <a class="nav-link btn btn-danger" href="DeleteGood/@good.GoodId">
+                            <span class="oi oi-trash" aria-hidden="true"> Delete </span>
+                        </a>
+                    </td>
+                    </tr>
+
+                    
+                }
+            </tbody>    
+
+
+       
+
+
+
+
+    </table>
+    
+}
+
+
+
+@code {
+    List<Goods> GoodObj;
+    protected override async Task OnInitializedAsync()
+    {
+        GoodObj = await Task.Run(() => goodService.GetAllGoods());    // we want the service to give us all good
+
+    }
+}

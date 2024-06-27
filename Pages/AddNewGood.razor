@@ -1,0 +1,53 @@
+﻿@page "/AddNewGood"
+@using GoodIssueNoteApp.Data
+@inject GoodsService goodService
+@inject NavigationManager NavigationManager
+
+<h3>Add New Good</h3>
+<hr />
+<form>
+       <div class ="row">
+           <div class="col-md-8"
+                <div class ="for-group">
+                    <label for="Name" class="control-label">Good Name</label>
+                    <input form ="Good Name" class="form-control" @bind = "@obj.Name" />
+                </div>
+                <div class ="for-group">
+                    <label for="Description" class="control-label">Description</label>
+                    <input form ="Description" class="form-control" @bind = "@obj.Description" />
+                </div>
+                <div class ="for-group">
+                    <label for="QuantityInStock" class="control-label">Quantity In Stock</label>
+                    <input form ="Quantity In Stock" class="form-control" @bind = "@obj.QuantityInStock" />
+                </div>
+           </div>
+       </div>
+       <div class ="row">
+           <div class ="col-md-4">
+               <input type ="button" class="btn btn-primary" @onclick = "@CreateNewGoodDetails" value="Save Good"/>
+               <input type="button"  class="btn btn-danger"  @onclick ="@Cancel" value="Cancel"/>
+           </div>
+       </div>
+
+</form>
+
+
+
+
+
+
+@code {
+    Goods obj = new Goods();
+
+    protected async void CreateNewGoodDetails() // create button func.
+    {
+        await goodService.AddNewGood(obj);
+        NavigationManager.NavigateTo("GoodList"); // navigate to GoodList.razor
+    }
+
+    protected async void Cancel() // create button func.
+    {
+        NavigationManager.NavigateTo("GoodList"); // navigate to GoodList.razor
+    }
+
+}

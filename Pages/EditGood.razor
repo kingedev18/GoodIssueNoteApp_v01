@@ -1,0 +1,67 @@
+﻿@page "/EditGood/{Id}"
+@using GoodIssueNoteApp.Data
+@inject GoodsService goodService
+@inject NavigationManager NavigationManager
+
+<h3>Edit Good</h3>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8"
+                <div class ="for-group">
+                    <label for="GoodId" class="control-label">Good Id</label>
+                    <input form ="GoodId" class="form-control" @bind = "@obj.GoodId" />
+                </div>
+                <div class ="for-group">
+                    <label for="Good Name" class="control-label">Good Name</label>
+                    <input form ="Good Name" class="form-control" @bind = "@obj.Name" />
+                </div>
+                <div class ="for-group">
+                    <label for="Description" class="control-label">Description</label>
+                    <input form ="Unit Description" class="form-control" @bind = "@obj.Description" />
+                </div>
+                <div class ="for-group">
+                    <label for="QuantityInStock" class="control-label">QuantityInStock</label>
+                    <input form ="QuantityInStock" class="form-control" @bind = "@obj.QuantityInStock" />
+                </div>
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <input type="button" class="btn btn-primary" @onclick="@UpdateInvoice" value="Update Invoice" />
+            <input type="button" class="btn btn-danger" @onclick="@Cancel" value="Cancel" />
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public int GoodId { get; set; }
+    Goods obj = new Goods();
+    protected override async Task OnInitializedAsync() 
+    {
+        obj = await Task.Run(() => goodService.GetGoodbyId(Convert.ToInt32(GoodId)));
+    }
+
+    protected async void UpdateInvoice() // create button func.
+    {
+        await goodService.UpdateGoodDetails(obj);
+        NavigationManager.NavigateTo("Invoices"); // navigate to InvoiceList.razor
+
+    }
+
+
+    protected async void Cancel() // create button func.
+    {
+        NavigationManager.NavigateTo("Invoices"); // navigate to InvoiceList.razor
+
+    }
+
+}

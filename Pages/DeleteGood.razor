@@ -1,0 +1,62 @@
+﻿@page "/DeleteGood/{Id}"
+@using GoodIssueNoteApp.Data
+@inject GoodsService goodService
+@inject NavigationManager NavigationManager
+
+<h3>Delete Invoice</h3>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8"
+                <div class ="for-group">
+                    <label for="GoodID" class="control-label">Good ID</label>
+                    <label>@obj.GoodId</label>
+                </div>
+                <div class ="for-group">
+                    <label for="Name" class="control-label">GoodN Name</label>
+                    <label>@obj.Name</label>
+                </div>
+                <div class ="for-group">
+                    <label for="Description" class="control-label">Description</label>
+                    <label>@obj.Description </label>
+                </div>
+                <div class ="for-group">
+                    <label for="QuantityInStock" class="control-label">Quantity In Stock</label>
+                    <label>@obj.QuantityInStock </label>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="button" class="btn btn-primary" @onclick="@DeleteGoodRecord" value="Delete Invoice" />
+            <input type="button" class="btn btn-danger" @onclick="@Cancel" value="Cancel" />
+        </div>
+    </div>
+
+</form>
+
+
+@code {
+    [Parameter]
+    public int GoodId { get; set; }
+    Goods obj = new Goods();
+    protected override async Task OnInitializedAsync()
+    {
+        obj = await Task.Run(() => goodService.GetGoodbyId(Convert.ToInt32(GoodId)));
+    }
+
+    protected async void DeleteGoodRecord() // create button func.
+    {
+        await goodService.DeleteGood(obj);
+        NavigationManager.NavigateTo("GoodList"); // navigate to GoodList.razor
+
+    }
+
+
+    protected async void Cancel() // create button func.
+    {
+        NavigationManager.NavigateTo("GoodList"); // navigate to GoodList.razor
+
+    }
+
+}
